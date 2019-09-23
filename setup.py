@@ -2,11 +2,11 @@ from setuptools import setup
 
 setup(
     name="networksdb",
-    version="1.0.2",
+    version="1.0.3",
     description="Official Python library for NetworksDB.io",
     long_description=open('README.md').read(),
     long_description_content_type="text/markdown",
-    url="https://github.com/networksdb/networksdb-python",
+    url="https://networksdb.io",
     author="NetworksDB",
     author_email="contact@networksdb.io",
     license="Apache License 2.0",
