@@ -13,7 +13,7 @@ The details returned by the API include, but aren't limited to, the following:
 - **ASN info**: Information about the autonomous system, including the owner company.
 - **ASN networks**: IPv4/6 network prefixes announced by the autonomous system, including the company they are allocated to.
 - **Reverse DNS**: List of domain names resolving to the IP address.
-- **"Mass" reverse DNS**: List of domain names resolving to addresses in an IP range.
+- **"Mass" reverse DNS**: List of domain names resolving to addresses in an IP range *(not available to free API keys)*.
 
 ## Installation
 
@@ -28,7 +28,7 @@ Or clone the repository and run `python3 setup.py install`.
 Start by getting an instance of a NetworksDB API handler, supplying your API key.
 ```
 from networksdb import NetworksDB
->>> api = NetworksDB('0123456789')
+>>> api = NetworksDB('11111111-2222-3333-4444-555555555555')
 ```
 Get information about an IP address:
 ```
@@ -91,11 +91,12 @@ To request organisation details, you need to supply its NetworksDB `id`. To find
 >>> search.results[0].id
 'github-inc'
 ```
-### Organisation Info
+
+### Organisation info
 Once you've found the correct ID, pass it to the *organisation info* API call:
 ```
 >>> github = api.org_info('github-inc')
->>>> print(github)
+>>> print(github)
 {
     "organisation": "GitHub, Inc",
     "id": "github-inc",
@@ -117,13 +118,14 @@ Once you've found the correct ID, pass it to the *organisation info* API call:
     ]
 }
 ```
+
 ### Organisation networks
 
 Find out which networks they own or operate:
 ```
 >>> github_networks = api.org_networks(github.id)
->>> for result in github_networks.results:
-...     print(result.netname, result.description, result.cidr)
+>>> for range in github_networks.results:
+...     print(range.netname, range.description, range.cidr)
 ... 
 GITHU GitHub, Inc 140.82.112.0/20
 US-GITHUB-20170413 GitHub, Inc 185.199.108.0/22
@@ -136,9 +138,9 @@ RSPC-CC4A7060-6141-4A22-BD6B-98A2B581247D GitHub 148.62.46.150/31
 ```
 Or, for IPv6:
 ```
->>> github_ipv6_networks = api.org_networks('github-inc', ipv6=True)
->>> for result in github_ipv6_networks.results:
-...     print(result.netname, result.description, result.cidr)
+>>> github_ipv6_networks = api.org_networks(github.id, ipv6=True)
+>>> for range in github_ipv6_networks.results:
+...     print(range.netname, range.description, range.cidr)
 ... 
 US-GITHUB-20170419 GitHub, Inc 2a0a:a440::/29
 GITHUB-NET6-1 GitHub, Inc 2620:112:3000::/44
@@ -167,7 +169,7 @@ Mass reverse DNS is the same thing, but on a full network block:
 185.199.108.15 ('canyourecognize.ga', 'djuric.se', 'glenberis.co.uk', 'hectormanrique.com', 'trustkaro.com')
 185.199.108.22 ('jidanlee.com',)
 ```
-Note: This API endpoint is not available to the free plan.
+*Note: Mass reverse DNS is not available to free API keys.*
 
 ### Find all domains hosted by a company
 It's pretty easy to iterate through the company's networks and request the list of domain names for each network:
