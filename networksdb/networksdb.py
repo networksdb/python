@@ -14,7 +14,7 @@ class NetworksDB(object):
 		self.endpoint = 'https://networksdb.io'
 
 	def request(self, path, params={}):
-		res = requests.post('{}/{}'.format(self.endpoint, path), headers={'X-Api-Key': self.apikey}, data=params).json()
+		res = requests.post('{}{}'.format(self.endpoint, path), headers={'X-Api-Key': self.apikey}, data=params).json()
 		return Response(res)
 
 	def key_info(self):
