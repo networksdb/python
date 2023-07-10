@@ -1,8 +1,10 @@
 import requests
 import json
-import attrdict
 
-class Response(attrdict.AttrDict):
+class Response(dict):
+	__getattr__ = dict.__getitem__
+	__setattr__ = dict.__setitem__
+	__delattr__ = dict.__delitem__
 
 	def __str__(self):
 		return json.dumps(self, indent=4)
