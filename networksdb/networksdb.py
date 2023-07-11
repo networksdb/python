@@ -1,8 +1,16 @@
 import requests
 import json
-import attrdict
 
-class Response(attrdict.AttrDict):
+class Response(dict):
+
+	def __getattr__(self, key):
+		if key in self:
+			return Response(self[key]) if isinstance(self[key], dict) else self[key]
+
+		raise AttributeError(f"'Response' object has no attribute '{key}'")
+
+	__setattr__ = dict.__setitem__
+	__delattr__ = dict.__delitem__
 
 	def __str__(self):
 		return json.dumps(self, indent=4)
